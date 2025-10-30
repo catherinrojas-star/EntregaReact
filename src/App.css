@@ -1,0 +1,14 @@
+/* animación simple fade in/out */
+.fade {
+  opacity: 0;
+  transition: opacity 0.35s ease-in-out;
+}
+
+.fade.show {
+  opacity: 1;
+}
+
+/* opcional: centrar mejor el card en pantallas pequeñas */
+.card {
+  border-radius: 12px;
+}
