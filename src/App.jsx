@@ -1,90 +1,74 @@
 import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 function App() {
-  // ===== STATE =====
-  const [numero1, setNumero1] = useState("");
-  const [numero2, setNumero2] = useState("");
-  const [resultado, setResultado] = useState(null);
-  const [error, setError] = useState("");
-  const [visible, setVisible] = useState(false); // para animación
+  const [firstNumber, setFirstNumber] = useState("");
+  const [secondNumber, setSecondNumber] = useState("");
+  const [result, setResult] = useState(null);
 
-  // ===== EVENT HANDLER =====
-  const handleMultiplicar = (e) => {
-    e.preventDefault();
-    // Reiniciar visibilidad para animación
-    setVisible(false);
-
-    // Validación — Conditional Rendering
-    if (numero1 === "" || numero2 === "") {
-      setError("Por favor complete todos los campos");
-      setResultado(null);
-      // mostrar mensaje con pequeño delay para animación
-      setTimeout(() => setVisible(true), 50);
-    } else {
-      setError("");
-      const multiplicacion = parseFloat(numero1) * parseFloat(numero2);
-      setResultado(multiplicacion);
-      setTimeout(() => setVisible(true), 50);
+  const handleMultiply = () => {
+    // Validar que ambos campos estén completos
+    if (firstNumber === "" || secondNumber === "") {
+      setResult("error");
+      return;
     }
+
+    // Calcular resultado
+    const multiplication = Number(firstNumber) * Number(secondNumber);
+    setResult(multiplication);
+
+    console.log("Primer número:", firstNumber);
+    console.log("Segundo número:", secondNumber);
+    console.log("Resultado:", multiplication);
   };
 
   return (
-    <div className="bg-light min-vh-100 d-flex justify-content-center align-items-center">
-      <div className="card p-4 shadow-sm" style={{ width: "420px" }}>
-        <h3 className="text-center mb-4">
-          Ingresar dos números para multiplicar
-        </h3>
+    <div className="container w-50 mx-auto mt-5 text-center">
+      <h1 className="fw-semibold mb-4">
+        Ingresar dos números para multiplicar
+      </h1>
 
-        <form onSubmit={handleMultiplicar}>
-          <div className="mb-3">
-            <label htmlFor="numero1" className="form-label">
-              Número 1
-            </label>
-            <input
-              id="numero1"
-              type="number"
-              className="form-control"
-              value={numero1}
-              onChange={(e) => setNumero1(e.target.value)}
-              placeholder="Ingrese el primer número"
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="numero2" className="form-label">
-              Número 2
-            </label>
-            <input
-              id="numero2"
-              type="number"
-              className="form-control"
-              value={numero2}
-              onChange={(e) => setNumero2(e.target.value)}
-              placeholder="Ingrese el segundo número"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-success w-100"
-            id="btnMultiplicar"
-          >
-            Multiplicar
-          </button>
-        </form>
-
-        <div className={`fade ${visible ? "show" : ""}`}>
-          {error && (
-            <p className="text-danger text-center mt-3 fw-bold">{error}</p>
-          )}
-          {resultado !== null && !error && (
-            <p className="text-success text-center mt-3 fw-bold">
-              Resultado: {resultado}
-            </p>
-          )}
-        </div>
+      {/* Campo número 1 */}
+      <div className="mb-3 text-start">
+        <label htmlFor="primerNum" className="form-label fw-semibold">
+          Número 1
+        </label>
+        <input
+          type="number"
+          id="primerNum"
+          className="form-control"
+          value={firstNumber}
+          onChange={(e) => setFirstNumber(e.target.value)}
+        />
       </div>
+
+      {/* Campo número 2 */}
+      <div className="mb-3 text-start">
+        <label htmlFor="segundoNum" className="form-label fw-semibold">
+          Número 2
+        </label>
+        <input
+          type="number"
+          id="segundoNum"
+          className="form-control"
+          value={secondNumber}
+          onChange={(e) => setSecondNumber(e.target.value)}
+        />
+      </div>
+
+      {/* Botón */}
+      <button className="btn btn-success mb-3" onClick={handleMultiply}>
+        Multiplicar
+      </button>
+
+      {/* Resultado o mensaje de error */}
+      {result !== null && result !== "error" ? (
+        <p>El resultado es: {result}</p>
+      ) : result === "error" ? (
+        <p className="text-danger fw-semibold">
+          Por favor complete todos los campos
+        </p>
+      ) : null}
     </div>
   );
 }
